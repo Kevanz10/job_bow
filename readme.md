@@ -35,6 +35,6 @@ Contains the specs for every class.
 
 
 
-##How to run specs
+## How to run specs
 * To test an specific file, go to the folder where the project is. Then, execute rspec spec/lib/<name_file.rb>
 * If you want to run all test, execute rspec inside the main folder.
