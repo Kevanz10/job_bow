@@ -4,26 +4,17 @@ require_relative 'frame_score'
 require_relative 'scoreboard_table'
 
 class Bowling
-
   attr_accessor :frame_points, :scores, :pinfalls, :names
-
   def initialize file
-    @points = User.scores(file)
+    @file = file
+    @points = User.scores(@file)
     @frame_points = []
     @scores = []
     @pinfalls = []
     @names = []
   end
 
-  def board
-    points = @points.map do |player, pinfalls|
-      frame = Frame.new(player, pinfalls)
-      frame = frame.calculate_frame_scores
-      @frame_points << frame
-    end
-  end
-
-  def calculatore_scores
+  def play
     board
     get_names
     @frame_points.each do |player_frames|
@@ -35,13 +26,22 @@ class Bowling
     scoreboard_table.board
   end
 
-  def get_names 
-    @points.select { |key,_| @names << key }
-  end
+  private
+    def board
+      points = @points.each do |player, pinfalls|
+        frame = Frame.new(pinfalls)
+        frame = frame.calculate_frame_scores
+        @frame_points << frame
+      end
+    end
+
+    def get_names 
+      @points.select { |key,_| @names << key }
+    end
 end
 
 file = ARGV.first
 board = Bowling.new(file)
-board.calculatore_scores
+board.play
 
 

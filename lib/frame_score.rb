@@ -1,4 +1,3 @@
-require 'byebug'
 class FrameScore
 
   MAX_PINFALLS_IN_A_GAME = "10".freeze
@@ -7,7 +6,7 @@ class FrameScore
     if perfect_game?(player_frames)
       [perfect_game_scores, pinfall_equal_generator("X")]
     else
-      scores = perfect_game_calculator(player_frames)
+      scores = normal_game_calculator(player_frames)
       [scores[0], scores[1]]
     end
   end
@@ -20,7 +19,7 @@ class FrameScore
     scores
   end
 
-  def self.perfect_game_calculator player_frames
+  def self.normal_game_calculator player_frames
     points = []
     pinfalls = []
     player_frames.each_with_index do |score, index|
@@ -47,10 +46,6 @@ class FrameScore
     scores.all? {|score| score == MAX_PINFALLS_IN_A_GAME} 
   end
 
-  def self.all_foul? scores
-    scores.all? {|frame| frame[0] && frame[1] == "F"}
-  end
-
   def self.pinfall_equal_generator(letter)
     pinfalls = []; 10.times { pinfalls << "#{letter}"}
     pinfalls
@@ -64,12 +59,8 @@ class FrameScore
     total = 0
     if next_frame != MAX_PINFALLS_IN_A_GAME            
       total += frame_add(next_frame[0], next_frame[1])
-    elsif next_frame == MAX_PINFALLS_IN_A_GAME      
-      if second_next == MAX_PINFALLS_IN_A_GAME
-        second_next = second_next.to_i
-      else
-        second_next = second_next[0].to_i
-      end
+    else  
+      second_next == MAX_PINFALLS_IN_A_GAME ? second_next = second_next.to_i : second_next = second_next[0].to_i
       total += 10 + second_next
     end
     total
@@ -84,11 +75,7 @@ class FrameScore
   end
 
   def self.pinfall_identifier(score)
-    if score != "F"
-      sign = "/"
-    else
-      sign = "F"
-    end
+    score != "F" ? "/" : "F"
   end
 
   def self.normal? score

@@ -1,10 +1,8 @@
-require 'byebug'
 require_relative 'frame_score'
-
+require "byebug"
 class Organizer
   def self.pinfalls_per_frame pinfalls
     formated_array = [] 
-    new_array = []
     new_array = pinfalls
     new_array.each_with_index do |pinfall, index|
       if pinfall == FrameScore::MAX_PINFALLS_IN_A_GAME

@@ -1,4 +1,3 @@
-require "byebug"
 class ScoreboardTable
   def initialize(scores, pinfalls, names)
     @scores = scores
@@ -6,7 +5,7 @@ class ScoreboardTable
     @names = names
   end
 
-  def frame index
+  def self.frame
     print "Frame\t\t"
     (1..10).each {|frame_number| print "#{frame_number}\t\t"}
     print "\n"
@@ -37,11 +36,9 @@ class ScoreboardTable
     print "\n"
   end
 
-
-
   def board
-    @names.each_with_index do |name, index|
-      frame(index) if index == 0
+    (1..@names.size).each_with_index do |name, index|
+      ScoreboardTable.frame if index == 0
       player_name(index)
       pinfalls(index)
       score(index)
